@@ -120,12 +120,16 @@ PageRequest.of(0, 10, Sort.by("lastName").ascending()) means:
 
 #### 📘 Page<T>
    - This is a fully featured page.
+   - A `Page` extends `Slice` and includes full pagination information.
    - Contains:
        - The list of items 
-       - Total elements 
+       - Total elements (Total number of elements in the `entire dataset`)
        - Total pages 
        - Page number 
        - Page size 
+       - current page
+       - no. of  items in a current page
+       -  first /last page status
        - Whether it’s the last page
    ``` java
      Page<User> usersPage = userRepository.findAll(PageRequest.of(0, 5,Sort.by("lastname"));
@@ -133,8 +137,10 @@ PageRequest.of(0, 10, Sort.by("lastName").ascending()) means:
    ```
 #### 📘 Slice<T>
    - Like Page, but cheaper.
+   - A Slice is a  `lighter version` of Page — it’s used when you don’t need the total count, which can be expensive to compute in large datasets (e.g., in databases).
    - Doesn’t count total elements or pages. 
    - Good for "load more" functionality (like infinite scrolling).
+   - 🟡 Why? Because Slice is usually used when you `only fetch enough data` to know whether another page exists, `without counting the total`.
 
 `Slice<User> userSlice = userRepository.findAll(PageRequest.of(0, 5));`
 
