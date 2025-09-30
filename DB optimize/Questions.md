@@ -1,4 +1,16 @@
-# 🟢 EntityManager: `persist()` vs `merge()`
+# 📚 Difference Between JPA and Hibernate ⚙️
+
+- 📜 **JPA (Java Persistence API):**  
+  JPA is like a **set of rules** (a standard) for working with databases in Java.  
+  It defines how Java objects should be mapped to database tables, but does **not** provide an implementation.
+
+- 🛠️ **Hibernate:**  
+  Hibernate is a **tool** (a library) that follows those rules.  
+  It is an implementation of the JPA specification and provides additional features for database operations.
+
+---
+
+# 🟢 2. EntityManager: `persist()` vs `merge()`
 
 This document outlines the core differences between `EntityManager.persist()` and `EntityManager.merge()` in JPA (Java Persistence API).
 
