@@ -42,7 +42,7 @@
 
 ---
 
-# 🟢 3. EntityManager: `persist()` vs `merge()`
+# 3. 🟢 EntityManager: `persist()` vs `merge()`
 
 This document outlines the core differences between `EntityManager.persist()` and `EntityManager.merge()` in JPA (Java Persistence API).
 
