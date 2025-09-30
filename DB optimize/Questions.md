@@ -1,4 +1,4 @@
-# 📚 Difference Between JPA and Hibernate ⚙️
+# 1. 📚 Difference Between JPA and Hibernate ⚙️
 
 - 📜 **JPA (Java Persistence API):**  
   JPA is like a **set of rules** (a standard) for working with databases in Java.  
@@ -10,13 +10,45 @@
 
 ---
 
-# 🟢 2. EntityManager: `persist()` vs `merge()`
+# 2. 🔄 JPA Entity Lifecycle States
+
+## 🆕 New (Transient)
+
+- 🛠️ The entity is just created but **not saved** in the database yet.
+- 👀 JPA doesn’t know about it.
+  
+## 📦 Managed (Persistent)
+
+- 💾 The entity is **saved** in the database or loaded from it.
+- 🔍 JPA is **tracking changes** to it.
+
+## 🔌 Detached
+
+- 🚪 The entity was once managed but now is **disconnected** from JPA (for example, after closing the session).
+- ⚠️ Changes won’t be saved unless reattached.
+
+## 🗑️ Removed
+
+- 🏷️ The entity is **marked for deletion** from the database but **not deleted yet**.
+- ✔️ Once the transaction commits, it will be deleted.
+
+``` java
+    User user = new User();  // New/Transient - not saved yet
+    entityManager.persist(user);  // Managed - saved in DB, JPA tracks it
+
+    entityManager.detach(user);  // Detached - no longer tracked by JPA
+    entityManager.remove(user);  // Removed - marked for deletion in DB
+```
+
+---
+
+# 🟢 3. EntityManager: `persist()` vs `merge()`
 
 This document outlines the core differences between `EntityManager.persist()` and `EntityManager.merge()` in JPA (Java Persistence API).
 
-| 🧠 **Method**     | 🎯 **Purpose**                         | 🧩 **Works On**                     | 🔁 **Returns**         |
-|------------------|----------------------------------------|-------------------------------------|------------------------|
-| `persist()`      | ➕ Insert a **new** entity into the DB | 🆕 Only **new (transient)** objects | 🚫 `void` (no return)  |
+| 🧠 **Method**     | 🎯 **Purpose**                         | 🧩 **Works On**                     | 🔁 **Returns**           |
+|------------------|----------------------------------------|-------------------------------------|-----------------------------|
+| `persist()`      | ➕ Insert a **new** entity into the DB | 🆕 Only **new (transient)** objects | 🚫 `void` (no return)      |
 | `merge()`        | 🔄 Update existing or insert if not exist | 🔌 **Detached** or **new** objects | ✅ Managed entity (copy) |
 
 
