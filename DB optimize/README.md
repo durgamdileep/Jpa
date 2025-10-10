@@ -127,6 +127,13 @@ which is `🐌 slow for large tables`.
       ...
    }
   ```
+  ## ❌ Problems of Using Indexes
+1. Slower Write Performance
+
+- Every time you INSERT, UPDATE, or DELETE a row, the database also has to update the associated index(es).
+- More indexes = more overhead during write operations.
+Example:
+ - If you update the email column, and you have an index on it, the DB must update the index as well. This adds latency.
 
 ---
 
