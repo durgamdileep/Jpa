@@ -183,7 +183,7 @@ In frameworks like Spring, there are different **Propagation** types, like:
 
 ---
 
-## 🧩 Imagine we have different microservices like:
+## 🧩 Imagine we have different Services like:
 
 - 🛒 **Order Service**
 - 💳 **Payment Service**
