@@ -166,4 +166,43 @@ A **detached object** is an entity that:
 - 🧼 Always remember: `merge()` **does not update the passed object**—it returns a new managed copy.
 
 
+---
+
+# 🆚 JPQL vs Native SQL Queries
+
+## 📝 JPQL (Java Persistence Query Language)
+
+- 🔹 JPQL is an **object-oriented query language** defined by JPA.  
+- 🔹 It operates on **entity objects** rather than directly on database tables.  
+- 🔹 When you execute a JPQL query (e.g. `SELECT e FROM Employee e`), **JPA automatically maps the result into entity objects**.  
+- ✅ Hence, you don’t need to manually convert the table data into entity fields — the **persistence provider (like Hibernate) handles that**.
+
+``` java
+   List<Employee> employees = entityManager
+    .createQuery("SELECT e FROM Employee e", Employee.class)
+    .getResultList();
+
+```
+- Here, `each row from the Employee table` is automatically converted into an `Employee` entity.
+
+  
+## 🗄️ Native SQL Query
+
+- 🔹 A **native query** directly uses SQL and works on **database tables** rather than entity objects.  
+- 🔹 When you execute a native query, it returns **raw database rows** (typically as `Object[]` or scalar values).  
+- ⚠️ Therefore, you need to manually **map those results to entities or DTOs (Data Transfer Objects)**, either:  
+  - 🛠️ Using a **mapper class**, or  
+  - 📜 Using `@SqlResultSetMapping`, or  
+  - 🎯 By specifying the **result class** in the query.
+
+ ``` java
+  List<Object[]> results = entityManager
+    .createNativeQuery("SELECT id, name, salary FROM employee")
+    .getResultList();
+
+List<EmployeeDTO> employees = results.stream()
+    .map(r -> new EmployeeDTO((Long) r[0], (String) r[1], (Double) r[2]))
+    .collect(Collectors.toList());
+
+```
 
