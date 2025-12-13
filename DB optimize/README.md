@@ -97,6 +97,36 @@ Suppose you want to fetch all blog posts and then print their comments:
 - So `no extra queries are executed` later when accessing the association.
 - It avoids the N+1 problem and populates the associated entities in the persistence context.
 
+## 🚀 Lazy vs Eager Loading in Spring Boot / JPA
+
+### ⏩ **Single-valued associations** (default: `EAGER`)
+
+- ⚡ `@ManyToOne` – Loaded **immediately** with the parent entity  
+- ⚡ `@OneToOne` – Loaded **immediately** with the parent entity  
+
+> ⚠️ By default, these associations are **eagerly loaded**, meaning the related entity is loaded **right away**.
+
+### ⏳ **Collection-valued associations** (default: `LAZY`)
+
+- 💤 `@OneToMany` – Loaded **on demand** when accessed  
+- 💤 `@ManyToMany` – Loaded **on demand** when accessed  
+
+> ⚠️ By default, these associations are **lazily loaded**, meaning the related entities are loaded **only when needed**.
+
+## 📌 Summary
+
+| Association Type        | Default Fetch Type |
+|------------------------|-----------------|
+| ⚡ `@ManyToOne`           | EAGER           |
+| ⚡ `@OneToOne`            | EAGER           |
+| 💤 `@OneToMany`           | LAZY            |
+| 💤 `@ManyToMany`          | LAZY            |
+> ✅ Lazy loading is generally preferred for collections to **avoid performance issues** (N+1 queries).  
+> ✅ Eager loading is fine for single-valued associations when you **always need the related entity**.
+- fetch = FetchType.LAZY
+- fetch = FetchType.EAGER
+
+
 ---
 
 # 📉 Missing or Improper Indexes
