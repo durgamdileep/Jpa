@@ -1,12 +1,17 @@
 # 1. 📚 Difference Between JPA and Hibernate ⚙️
 
-- 📜 **JPA (Java Persistence API):**  
-  JPA is like a **set of rules** (a standard) for working with databases in Java.  
-  It defines how Java objects should be mapped to database tables, but does **not** provide an implementation.
+- 📜 **JPA (Java Persistence API):**
+  - 🧩 JPA (Java Persistence API) is a specification that `defines a set of rules for object–relational mapping (ORM)` and `for managing data between Java objects and relational databases 🗄️`.
+  - 🔌 It does not handle database connections by itself and does not eliminate queries entirely.
+  - 📦 It maps Java classes to database tables using entities, but does **not** provide an implementation.
 
 - 🛠️ **Hibernate:**  
   Hibernate is a **tool** (a library) that follows those rules.  
   It is an implementation of the JPA specification and provides additional features for database operations.
+  - 🧠 Hibernate is a framework and a JPA implementation.
+  - 💾 It provides the `actual functionality` to persist, retrieve, update, and delete data in the database.
+  - 🧾 It supports `JPQL`, `Criteria API`, and `native SQL queries`, and it reduces the need to write SQL in many cases.
+
 
 ---
 
