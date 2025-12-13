@@ -209,20 +209,49 @@ A **detached object** is an entity that:
 - 🔹 A **native query** directly uses SQL and works on **database tables** rather than entity objects.  
 - 🔹 When you execute a native query, it returns **raw database rows** (typically as `Object[]` or scalar values).  
 - ⚠️ Therefore, you need to manually **map those results to entities or DTOs (Data Transfer Objects)**, either:  
-  - 🛠️ Using a **mapper class**, or  
-  - 📜 Using `@SqlResultSetMapping`, or  
-  - 🎯 By specifying the **result class** in the query.
+  - 🧩 **Raw `Object[]` mapping** → explicit conversion to entity/DTO.
+      ``` java
+      List<Object[]> results = entityManager
+        .createNativeQuery("SELECT id, name, salary FROM employee")
+        .getResultList();
+    
+    List<EmployeeDTO> employees = results.stream()
+        .map(r -> new EmployeeDTO((Long) r[0], (String) r[1], (Double) r[2]))
+        .collect(Collectors.toList());
 
- ``` java
-  List<Object[]> results = entityManager
-    .createNativeQuery("SELECT id, name, salary FROM employee")
-    .getResultList();
+     ```
+  - ⚡ **Spring Data JPA DTO projection** → automatically mapped to DTO (interface or class-based).
+      ``` java
+         @Query(value = "SELECT name as name, salary as salary FROM employee", nativeQuery = true)
+         List<EmployeeDTO> fetchEmployeeDTOs();
+      ```
+  - 🏗️ **`@SqlResultSetMapping` + `@NamedNativeQuery`** → maps native query results to DTO using constructor.
+     ``` java
+      inside Entity Employee Class
+      @SqlResultSetMapping(
+        name = "EmployeeDTOMapping",
+        classes = @ConstructorResult(
+            targetClass = EmployeeDTO.class,
+            columns = {
+                @ColumnResult(name = "name", type = String.class),
+                @ColumnResult(name = "salary", type = Double.class)
+            }
+        )
+     )
+     @NamedNativeQuery(
+        name = "Employee.fetchEmployeeDTOs",
+        query = "SELECT name, salary FROM employee",
+        resultSetMapping = "EmployeeDTOMapping"
+     )
 
-List<EmployeeDTO> employees = results.stream()
-    .map(r -> new EmployeeDTO((Long) r[0], (String) r[1], (Double) r[2]))
-    .collect(Collectors.toList());
+     in Respository Layer
+     @Query(name = "Employee.fetchEmployeeDTOs", nativeQuery = true)
+     List<EmployeeDTO> fetchEmployeeDTOs();
 
-```
+     ``` 
+
+
+ 
 
 ### ✅ Advantages
 - 🎯 Full control over SQL  
