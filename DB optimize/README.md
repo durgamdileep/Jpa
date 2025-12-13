@@ -157,14 +157,6 @@ which is `🐌 slow for large tables`.
       ...
    }
   ```
-  ## ❌ Problems of Using Indexes
-1. Slower Write Performance
-
-- Every time you INSERT, UPDATE, or DELETE a row, the database also has to update the associated index(es).
-- More indexes = more overhead during write operations.
-Example:
- - If you update the email column, and you have an index on it, the DB must update the index as well. This adds latency.
-
 ---
 
 # Internal Structure of an Index
@@ -197,6 +189,16 @@ Example:
 - 🗄️ Index does `not` store the full row (unless it’s a clustered index).  
 - 🔑 Stores only the indexed column + pointer to row.  
 - ⚡ Improves query performance dramatically, especially on large tables.
+
+## ❌ Problems of Using Indexes
+1. Slower Write Performance
+
+- Every time you INSERT, UPDATE, or DELETE a row, the database also has to update the associated index(es).
+- More indexes = more overhead during write operations.
+Example:
+ - If you update the email column, and you have an index on it, the DB must update the index as well. This adds latency.
+   
+---
 
 
 # 🔍 Over-Fetching Data
