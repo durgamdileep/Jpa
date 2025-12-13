@@ -167,6 +167,38 @@ Example:
 
 ---
 
+# Internal Structure of an Index
+
+- 🗂️ An index is `a separate structure` that stores the `column you want to search` and `row pointer / primary key`, so the database can find data faster.`
+### 📌 Index Table stores:
+
+- 🔑 `Indexed column value (the key)`  
+- 🗂️ `Row pointer or primary key (to find the full row in the main table)`  
+  - 📍 The row pointer tells the database where to go in the table to fetch the rest of the data.
+
+### 🌳 Tree Representation
+
+- 🏗️ Databases typically use `B-tree or B+ tree`, not a simple binary search tree.  
+- 🌲 `B-tree` organizes keys in a hierarchical tree structure for fast search.
+
+#### 🔍 Search steps in a B-tree:
+
+1. 🏁 Start at the `root node`.  
+2. 🔄 Compare the target value with the current node:  
+   - ⬅️ If smaller → go left  
+   - ➡️ If larger → go right  
+3. 🔁 Repeat until the key is found.  
+4. 🗂️ Use the `row pointer` to fetch the full row from the table.  
+
+- ⏱️ `Search time: O(log n)` → very efficient.
+
+### ✅ Key Points
+
+- 🗄️ Index does `not` store the full row (unless it’s a clustered index).  
+- 🔑 Stores only the indexed column + pointer to row.  
+- ⚡ Improves query performance dramatically, especially on large tables.
+
+
 # 🔍 Over-Fetching Data
 
 ### What is Over-Fetching?
