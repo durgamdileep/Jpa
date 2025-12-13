@@ -211,9 +211,11 @@ A **detached object** is an entity that:
 - ⚠️ Therefore, you need to manually **map those results to entities or DTOs (Data Transfer Objects)**, either:  
   - 🧩 **Raw `Object[]` mapping** → explicit conversion to entity/DTO.
       ``` java
-      List<Object[]> results = entityManager
-        .createNativeQuery("SELECT id, name, salary FROM employee")
-        .getResultList();
+       @Query(
+         value = "SELECT name, salary FROM employee", 
+         nativeQuery = true
+       )
+    List<Object[]> fetchEmployeeData(); // raw result, will map manually to DTO
     
     List<EmployeeDTO> employees = results.stream()
         .map(r -> new EmployeeDTO((Long) r[0], (String) r[1], (Double) r[2]))
