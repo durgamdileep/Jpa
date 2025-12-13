@@ -190,6 +190,19 @@ A **detached object** is an entity that:
 ```
 - Here, `each row from the Employee table` is automatically converted into an `Employee` entity.
 
+### ✅ Advantages
+- 🌐 Database independent (portable across DBs)  
+- 🧩 Object-oriented (uses entities & fields, not tables & columns)  
+- 🔄 Automatic mapping to entity objects  
+- 🛡️ Safer and easier to maintain  
+- ⚡ Works well with JPA features (caching, lazy loading, relationships)  
+
+### ❌ Disadvantages
+- 🚫 Limited access to database-specific features  
+- 🐢 Can be less efficient for complex or highly optimized queries  
+- ❌ Not suitable for vendor-specific SQL functions  
+- 🔍 Debugging can be harder (JPQL → SQL translation is hidden)
+
   
 ## 🗄️ Native SQL Query
 
@@ -210,4 +223,20 @@ List<EmployeeDTO> employees = results.stream()
     .collect(Collectors.toList());
 
 ```
+
+### ✅ Advantages
+- 🎯 Full control over SQL  
+- 🛠️ Can use database-specific features, hints, procedures  
+- ⚡ Often better performance for complex queries  
+- 🏗️ Useful for legacy databases or complex joins  
+
+### ❌ Disadvantages
+- 🌐 Database dependent (not portable)  
+- 📝 Requires explicit result mapping in many cases  
+- ⚠️ More error-prone and harder to maintain  
+- ⛔ Bypasses some JPA features (caching, change tracking)  
+
+## 📝 Summary
+- Use **JPQL** for portable, maintainable, entity-based queries  
+- Use **Native SQL** when you need `performance tuning` or `DB-specific features` 
 
