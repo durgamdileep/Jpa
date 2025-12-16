@@ -499,7 +499,7 @@ You can set this in Spring's `@Transactional` annotation:
 ---
 
 
-# Database Phenomena Overview
+## Database Phenomena Overview
 
 | 🔑 Concept           | 🎯 Focuses On               | ⚠️ Affects                                               |
 |----------------------|----------------------------|----------------------------------------------------------|
@@ -507,3 +507,23 @@ You can set this in Spring's `@Transactional` annotation:
 | 👻 **Phantom Read**         | 📊 A set of rows (result set)  | 👻 Running the same query (with a condition) gives more/fewer rows |
 
 ---
+
+
+
+# 🔒 Optimistic Locking in Spring (JPA/Hibernate)
+
+💡 **Optimistic locking** is a concurrency control mechanism that:  
+- 👀 `Allows multiple users` to `read the same data without locking it`.  
+- ⚠️ `Detects conflicts at update time` by `comparing a version field/ timestamp field`.  
+- ❌ `Rejects the update` if the `data was modified by another transaction`.  
+
+### ⚙️ Implementation in Spring (with JPA/Hibernate)
+
+- 🏷️ Using `@Version` on the version field in the entity class (this `enables optimistic locking`).  
+- 📌 Using `@Transactional` on the service method (this defines the transaction boundary where the `version check happens` at `commit time`).  
+
+### 🆗 @Version in JPA/Hibernate
+
+- 🔼 The version field is `automatically incremented by Hibernate` each time the entity is successfully updated.  
+- ✋ You do not need to manually increment it.  
+- 🔄 This happens during `flush/commit of the transaction`.
