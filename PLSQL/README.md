@@ -694,3 +694,158 @@ A stored procedure can be executed in two main ways:
 | 🔢 Can have IN/OUT/IN OUT parameters | ✅ Yes | ✅ Only IN parameters (OUT not allowed) |
 | 🧩 Called from PL/SQL block | ✅ Yes | ✅ Yes |
 
+--- 
+
+# 📦 What is a Package in PL/SQL?
+
+- 🧩 A Package is a group of related PL/SQL objects stored together in the database.
+- 🛠️ It can include:
+  - 🔹 Procedures
+  - 🔹 Functions
+  - 🔹 Cursors
+  - 🔹 Variables, constants, and types
+- 📚 Think of a package as a library of related programs in one container.
+
+---
+
+## 🏗️ Structure of a Package
+
+| Part | Description |
+|------|-------------|
+| 📜 Package Specification | Public section: declares procedures, functions, types, variables that are visible outside the package |
+| 🏗️ Package Body | Private section: defines the actual implementation of procedures, functions, cursors |
+
+``` sql
+
+   // Package Specification Syntax
+
+       CREATE OR REPLACE PACKAGE package_name IS
+       -- Public declarations
+       PROCEDURE procedure_name(param1 IN NUMBER);
+       FUNCTION function_name(param1 IN NUMBER) RETURN NUMBER;
+       -- Global variables or constants
+       v_count NUMBER;
+       END package_name;
+        /
+```
+
+``` sql
+
+   // Package Body Syntax
+
+   CREATE OR REPLACE PACKAGE BODY package_name IS
+   -- Implementation of procedures/functions
+       PROCEDURE procedure_name(param1 IN NUMBER) IS
+       BEGIN
+          DBMS_OUTPUT.PUT_LINE('Procedure executed: ' || param1);
+       END procedure_name;
+
+       FUNCTION function_name(param1 IN NUMBER) RETURN NUMBER IS
+       BEGIN
+          RETURN param1 * 2;
+       END function_name;
+   END package_name;
+    /
+
+```
+
+---
+
+# ⚡ What is a Trigger in PL/SQL?
+
+- 🧾 A Trigger is a PL/SQL block that automatically executes (fires) when a specific event occurs in the database.
+- ⚙️ It’s like an automatic action attached to a table or view.
+- 🔁 No need to explicitly call it; the database executes it automatically.
+
+### 🔑 Key Points
+
+- ⏱️ Triggers are automatic programs  
+- 🏷️ Associated with tables or views  
+- 🔄 Can fire before or after DML operations (INSERT, UPDATE, DELETE)  
+- 🛡️ Can enforce business rules or audit data changes  
+
+---
+
+## 🔷 Types of Triggers
+
+| Type | Description |
+|------|-------------|
+| 📝 DML Triggers | Fire when a table is modified (INSERT, UPDATE, DELETE) |
+| 🔄 INSTEAD OF Triggers | Fire on views to perform DML operations |
+| 🏛️ System/DDL Triggers | Fire on database events (CREATE, ALTER, DROP) |
+| 🔗 Compound Triggers | Single trigger with multiple timing points (before/after row/statement) |
+
+---
+
+## 🧩 DML Triggers
+
+- ⚡ These are the most common triggers.
+
+### ⏱️ Timing of DML Trigger
+
+| Timing | Fires When |
+|--------|------------|
+| ⏮️ BEFORE | Before DML operation executes |
+| ⏭️ AFTER | After DML operation executes |
+
+### 📏 Scope
+
+| Scope | Description |
+|-------|------------|
+| 🧬 ROW | Executes once per affected row |
+| 📄 STATEMENT | Executes once per statement, regardless of rows |
+
+
+``` sql
+
+     //syntax
+
+       CREATE [OR REPLACE] TRIGGER trigger_name
+       {BEFORE | AFTER | INSTEAD OF} 
+       {INSERT | UPDATE | DELETE | UPDATE OF column_name} 
+       ON table_name
+       [FOR EACH ROW]
+        DECLARE
+           -- Optional variable declarations
+        BEGIN
+           -- Trigger logic
+        EXCEPTION
+           -- Optional exception handling
+        END;
+        /
+
+```
+---
+
+## 🔄 Difference Between %TYPE and %ROWTYPE
+
+| Feature | %TYPE | %ROWTYPE |
+|---------|-------|----------|
+| 📌 Scope | Single column | Entire row (all columns) |
+| 🧾 Type | Scalar variable | Record variable |
+| 🛠️ Usage | `v_var table.column%TYPE` | `v_record table%ROWTYPE` |
+| 🔹 Example | `v_name employee.name%TYPE` | `v_emp employee%ROWTYPE` |
+
+
+---
+
+## 🧩 What is a RECORD?
+
+- 🧾 A record is a composite variable that can hold different types of fields (columns) together, similar to a row in a table.
+- 🔢 Each field can have a different datatype.
+- 📦 Useful when you want to group multiple related values into one variable.
+
+---
+
+## 📝 How to Declare a RECORD
+
+- 🏷️ a) Using `%ROWTYPE` (table-based record)  
+- 🛠️ b) Using custom RECORD type  
+
+---
+
+## ▶️ Using RECORD with Cursors
+
+- 🔄 Records are often used to fetch rows from cursors into a single variable.
+- 🧩 Each field in the record corresponds to a column in the cursor's SELECT query.
+
