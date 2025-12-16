@@ -378,7 +378,7 @@ Oracle automatically:
 
 ---
 
-## 🧾 What is a Stored Procedure?
+# 🧾 What is a Stored Procedure?
 
 - 🧩 A Stored Procedure is a named PL/SQL block that is stored in the Oracle database and can be executed repeatedly.
 - 🗂️ Think of it as a function or program stored in the database.
@@ -499,3 +499,198 @@ A stored procedure can be executed in two main ways:
 - 🔐 Security – Control access, hide table structure  
 - 🛠️ Maintainability – Easy to update and manage  
 - 🎁 Encapsulation – Hides complexity of SQL queries  
+
+
+---
+
+
+# 1️⃣ 🔧 What is a Stored Function?
+
+- 🧾 A Stored Function is a named PL/SQL block stored in the database that:
+- 📥 Accepts parameters (optional)
+- ⚙️ Performs a specific task
+- 🔙 Returns a single value using the RETURN statement
+
+### ✅ Key difference from a procedure:
+
+- 🧩 Procedure: Does not return a value (can use OUT parameters)
+- 🧮 Function: Must return a value
+
+📌 Stored functions are often used in SQL statements, PL/SQL blocks, or other functions/procedures.
+
+---
+
+## 2️⃣ ❓ Why Do We Need Stored Functions?
+
+- ♻️ To reuse logic that returns a single value
+- 🧮 To simplify complex SQL or calculations
+- 🛠️ To improve maintainability (centralized logic)
+- 📊 To use functions inside SQL queries
+- 🔁 To ensure consistency (same calculation everywhere)
+
+---
+
+## 3️⃣ ⏰ When to Use Stored Functions
+
+- 📌 Use functions when:
+   - 🔢 You need a value computed based on input parameters
+   - ♻️ You want to reuse logic in multiple places
+   - 🔄 You want calculations or data transformations
+   - 📊 You want to embed logic inside SQL queries
+   - ✅ You need deterministic results for the same input
+
+---
+
+##  4️⃣ 🧱 Structure of a Stored Function
+
+``` sql
+
+        CREATE [OR REPLACE] FUNCTION function_name
+                          (parameter1 datatype, parameter2 datatype)
+        RETURN return_datatype -- specify the what type of value to be return
+        IS  -- or AS
+           -- Variable declarations (optional)
+        BEGIN
+           -- Logic
+           RETURN value;  -- Mandatory
+        EXCEPTION
+           -- Error handling (optional)
+        END function_name;
+        /
+
+```
+
+### 📂 Sections:
+
+- 🧾 Function Header: Name, parameters, return type
+- 📋 Declaration Section (Optional): Variables, cursors
+- ▶️ Executable Section (Mandatory): Logic and RETURN statement
+- ⚠️ Exception Section (Optional): Error handling
+
+---
+
+## 🔷 5️⃣ 🔢 Parameters in Functions
+
+- 📥 Functions can have IN parameters only
+- 🚫 They cannot have OUT parameters (use RETURN instead)
+
+---
+
+## ▶️ Stored functions can be executed in two main ways
+
+### 1️⃣ 📊 Using SELECT or direct SQL (preferred)
+
+- 🔙 Returns the value of the function.
+- 📈 Can be used in SELECT, WHERE, ORDER BY, etc. 
+
+  ``` sql
+     // example
+  
+        CREATE OR REPLACE FUNCTION square_number(p_num IN NUMBER)
+        RETURN NUMBER
+        IS
+        BEGIN
+           RETURN p_num * p_num;
+        END;
+        /
+
+        SELECT square_number(2) FROM DUAL;
+
+  
+  ```
+
+### 2️⃣ 🧩 Using an anonymous PL/SQL block
+
+- 📥 Must capture the return value in a variable.
+- 🚫 Cannot just call the function alone like a procedure in a PL/SQL block without using the return value.
+  ``` sql
+
+    // example
+  
+        CREATE OR REPLACE FUNCTION square_number(p_num IN NUMBER)
+        RETURN NUMBER
+        IS
+        BEGIN
+           RETURN p_num * p_num;
+        END;
+        /
+
+         DECLARE
+         v_result NUMBER;
+        BEGIN
+           v_result := square_number(5);
+           DBMS_OUTPUT.PUT_LINE('Square is: ' || v_result);
+        END;
+        /
+
+  ```
+
+---
+
+## 🧠 What is DUAL?
+
+- 📄 DUAL is a special one-row, one-column table provided by Oracle.
+- 🔢 It has exactly one row and one column named DUMMY.
+- 🧪 Used when you need to select a value, expression, or function without referencing a real table.
+
+
+## ❓ Why do we use DUAL?
+
+- 📊 In SQL, a SELECT statement requires a FROM clause.
+- 🧮 If you just want to evaluate an expression or call a function without querying a real table, you use DUAL.
+
+- 🔁 Oracle executes it once, because DUAL has only one row.
+- 🚫 Without DUAL, you cannot just write SELECT 5*10; — Oracle needs a FROM clause.
+
+
+## 📝 Notes
+
+- 🌐 In other databases, DUAL may not exist (e.g., SQL Server, MySQL) — they allow SELECT 5*10; without a table.
+- 🏛️ In Oracle, DUAL is standard for evaluating expressions, constants, or functions in SQL.
+
+---
+
+## 🔷 7️⃣ 📊 Using Functions Inside SQL
+
+- ⭐ One of the main advantages of functions is that they can be used in SQL queries.
+
+``` sql
+
+   SELECT emp_id, salary, square_number(salary) AS salary_square
+   FROM employees;
+
+```
+
+---
+
+## 🌟 Benefits of Stored Functions
+
+- ♻️ Reusability – Use function in multiple queries or programs
+- 🔁 Consistency – Same calculation everywhere
+- 🎁 Encapsulation – Hide complex logic
+- 🛠️ Maintainability – Update logic in one place
+- ⚡ Performance – Execution happens in DB, reduces network load
+
+---
+
+## 🔑 Key Points
+
+- 🔙 Function must have RETURN statement
+- 📥 Parameters are IN only
+- 📊 Can be used inside SQL queries
+- 🧮 Good for calculations, data transformations, validations
+- ⚠️ Can include exception handling
+
+---
+
+## 🔄 Main Differences Between Stored Procedure and Stored Function
+
+| Feature | Stored Procedure | Stored Function |
+|-------|-----------------|----------------|
+| 🔙 Returns Value | No direct return; can return values via OUT parameters | Returns a single value using RETURN statement |
+| 📊 Can be used in SQL query | ❌ No, cannot be called directly in SQL | ✅ Yes, can be called directly in SQL |
+| 🎯 Purpose | Perform an action or a series of actions (DML, business logic) | Perform computation and return a value |
+| 🧾 Syntax | PROCEDURE proc_name | FUNCTION func_name RETURN datatype |
+| 🔢 Can have IN/OUT/IN OUT parameters | ✅ Yes | ✅ Only IN parameters (OUT not allowed) |
+| 🧩 Called from PL/SQL block | ✅ Yes | ✅ Yes |
+
