@@ -374,3 +374,128 @@ Oracle automatically:
     /
 
 ```
+
+
+---
+
+## 🧾 What is a Stored Procedure?
+
+- 🧩 A Stored Procedure is a named PL/SQL block that is stored in the Oracle database and can be executed repeatedly.
+- 🗂️ Think of it as a function or program stored in the database.
+- 🔁 Once created, you can call it anytime without rewriting the code.
+- 📥📤 Can accept parameters and return results.
+
+---
+
+## ✅ Advantages of Stored Procedures
+
+| Advantage | Explanation |
+|---------|-------------|
+| ♻️ Reusability | Write once, call anywhere |
+| 🧩 Modularity | Break programs into smaller, manageable pieces |
+| ⚡ Performance | Stored in database, execution is faster |
+| 🔐 Security | Control access to data through procedures |
+| 🛠️ Maintenance | Update logic in one place instead of multiple applications |
+
+---
+
+## ❓ Why Do We Need Stored Procedures?
+
+- 🔁 When you have repeated business logic  
+- 🧠 When you want centralized code for multiple applications  
+- 🧮 When complex SQL and PL/SQL logic is needed  
+- 🚀 When you want better performance by avoiding sending multiple queries from client  
+- 🔄 When you need transaction control (commit/rollback) in one block  
+
+---
+
+##  3️⃣ When to Use Stored Procedures
+
+Use stored procedures when:
+
+- 📦 You want to encapsulate business logic  
+- 📊 You need to process data in batches  
+- 🙈 You want to hide complex queries from users  
+- 🔒 You want to improve security (users execute procedure, not direct SQL)  
+- 🌐 You want to reduce network traffic (processing happens on server)  
+
+---
+
+##  4️⃣ Structure of a Stored Procedure
+
+``` sql
+
+        CREATE [OR REPLACE] PROCEDURE procedure_name
+           [ (parameter1 IN datatype, parameter2 OUT datatype) ]
+        IS  -- or AS
+           -- Declarations (variables, cursors, constants)
+        BEGIN
+           -- Executable statements
+        EXCEPTION
+           -- Error handling (optional)
+        END procedure_name;
+        /
+
+```
+
+### 📂 Sections
+
+- 🧾 Procedure Header – Name + Parameters  
+- 📋 Declaration Section (Optional) – Variables, cursors  
+- ▶️ Executable Section (Mandatory) – SQL/PLSQL logic  
+- ⚠️ Exception Section (Optional) – Error handling  
+
+---
+
+## 🔢 5️⃣ Parameters in Stored Procedures
+
+| Mode | Description |
+|------|------------|
+| 📥 IN | Pass value to procedure (read-only) |
+| 📤 OUT | Return value from procedure |
+| 🔄 IN OUT | Pass value in and get updated value back |
+
+---
+
+## ▶️ Ways to Execute a Stored Procedure
+
+A stored procedure can be executed in two main ways:
+
+### 1️⃣ Using EXEC (or EXECUTE) command
+
+- 🧪 Works in SQL*Plus, SQL Developer, or tools that support anonymous execution.
+- ⚡ Convenient for quick testing.
+  ``` sql
+
+  // syntax
+
+    EXEC procedure_name;
+      -- or
+    EXEC procedure_name(param1, param2);
+
+  ```
+
+### 2️⃣ Using an anonymous PL/SQL block
+
+- 🧩 Useful when calling the procedure as part of a larger PL/SQL block.
+- ⚠️ Required if you want to combine multiple procedure calls or handle exceptions.
+  ``` sql
+    // syntax
+  
+        BEGIN
+          procedure_name;
+            -- or with parameters
+          procedure_name(param1, param2);
+        END;
+        /
+
+  ```
+---
+
+## 🌟 Benefits of Using Stored Procedures
+
+- ⚡ Performance – SQL runs inside DB, reduces network traffic  
+- ♻️ Reusability – Write once, call many times  
+- 🔐 Security – Control access, hide table structure  
+- 🛠️ Maintainability – Easy to update and manage  
+- 🎁 Encapsulation – Hides complexity of SQL queries  
