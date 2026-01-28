@@ -271,3 +271,94 @@ A **detached object** is an entity that:
 - Use **JPQL** for portable, maintainable, entity-based queries  
 - Use **Native SQL** when you need `performance tuning` or `DB-specific features` 
 
+
+---
+
+## 🔄 UPDATE with `@Query`
+
+-  ➕ For update queries you must add:
+  - 🧩 `@Modifying`
+  - 🔐 `@Transactional`
+``` sql
+
+   @Modifying
+   @Transactional
+   @Query("UPDATE User u SET u.status = :status WHERE u.id = :id")
+   int updateUserStatus(@Param("status") String status,
+                     @Param("id") Long id);
+
+```
+
+- 📌 Notes:
+
+   - 🧠 Uses JPQL, not SQL
+   - 🔢 Returns int → `number of rows affected`
+
+---
+
+## 🗑️ DELETE with `@Query`
+
+- 📏 Same rules as UPDATE.
+  ``` sql
+  
+      @Modifying
+      @Transactional
+      @Query("DELETE FROM User u WHERE u.email = :email")
+      int deleteByEmail(@Param("email") String email);
+
+  ```
+
+- ✅ You can also skip `@Query` entirely and just do:
+  ```sql
+     void deleteByEmail(String email);
+  ```
+- ⚙️ Spring Data will generate it automatically.
+
+---
+
+## 🚨 INSERT with `@Query` (Important!)
+
+-  ❌ JPQL does NOT support INSERT statements
+- 🚫 So this will NOT work:
+``` sql
+    @Query("INSERT INTO User (name, email) VALUES (:name, :email)") // ❌
+
+```
+
+---
+
+## ✅ How to do INSERT properly
+
+### 🌟 Option 1: Use `save()` (recommended)
+``` java
+    User user = new User();
+    user.setName("John");
+    user.setEmail("john@mail.com");
+    userRepository.save(user);
+
+```
+- 👉 This is the JPA way.
+
+### ⚠️ Option 2: Native SQL INSERT (if you really need it)
+
+``` sql
+
+    @Modifying
+    @Transactional
+    @Query(
+      value = "INSERT INTO users (name, email) VALUES (:name, :email)",
+      nativeQuery = true
+    )
+    int insertUser(@Param("name") String name,
+                   @Param("email") String email);
+
+```
+
+- ❗ Downsides:
+
+  - 🧬 Bypasses JPA entity lifecycle
+  - 🚫 No validation
+  - 🔄 No auto entity sync
+
+---
+
